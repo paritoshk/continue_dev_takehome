@@ -30,3 +30,11 @@ To test: `npm run test`
 To run the add command: `npm run test:add -- <package>`
 
 To run the install command: `npm run test:install`
+
+
+
+# Note
+1. The Repo shows implementations for nested dependencies, minimizing downloads, and handling version conflicts, which were part of the advanced tasks.
+2. The challenge.ts file (lines 17-82) contains a complex implementation for constructing an installation plan that handles nested dependencies and version conflicts.
+3. The test files (TODO.test.ts and challenge.test.ts) include tests for nested dependencies and complex scenarios.
+4. The README.md file (lines 1-33) describes features that were implemented, including nested dependencies and minimizing downloads.
