@@ -3,31 +3,26 @@ import { DEFAULT_PACKAGE_JSON } from "../../util/packageJson";
 import { outputDir, packageJsonPath } from "../../util/paths";
 import { getPackageInfo } from "../../util/registry";
 
-export async function addPackage(pkg: string) {
-  let [packageName, version] = pkg.split("@");
+export async function addPackage(packageString: string): Promise<void> {
+  const [packageName, version = "latest"] = packageString.split("@");
+  
+  const packageInfo = await getPackageInfo({
+    name: packageName,
+    version,
+    parentDirectory: ''
+  });
 
-  // If no specified version, or version is "latest", request latest version number
-  if (!version || version === "latest") {
-    const info = await getPackageInfo({
-      name: packageName,
-      version: "latest",
-    });
-    version = info.version;
+  const resolvedVersion = packageInfo.version;
+
+  let packageJson;
+  try {
+    packageJson = JSON.parse(await fs.promises.readFile(packageJsonPath, "utf8"));
+  } catch (error) {
+    packageJson = DEFAULT_PACKAGE_JSON;
   }
 
-  // Create output dir and package.json if not exist
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
-  }
-  if (!fs.existsSync(packageJsonPath)) {
-    fs.writeFileSync(
-      packageJsonPath,
-      JSON.stringify(DEFAULT_PACKAGE_JSON, null, 2)
-    );
-  }
+  packageJson.dependencies = packageJson.dependencies || {};
+  packageJson.dependencies[packageName] = resolvedVersion;
 
-  // Add package to package.json
-  const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
-  packageJson.dependencies[packageName] = version || "latest";
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+  await fs.promises.writeFile(packageJsonPath, JSON.stringify(packageJson, null, 2));
 }

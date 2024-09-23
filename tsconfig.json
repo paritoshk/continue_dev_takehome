@@ -10,6 +10,6 @@
     "sourceRoot": "src/index.ts",
     "outDir": "dist"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/commands/install/challenge.ts"],
   "exclude": ["node_modules"]
 }

@@ -1,6 +1,7 @@
 import { program } from "commander";
 import { addPackage } from "./commands/add/add";
 import { installAllDependencies } from "./commands/install/install";
+import { constructInstallationPlan } from "./commands/install/challenge";
 
 /**
  * Adds the dependency to the “dependencies” object in package.json

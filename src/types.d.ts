@@ -10,7 +10,7 @@ export interface Dependency {
  * the relative path starting from node_modules of the parent folder where this dependency should be installed
  */
 export interface DependencyInstallation extends Dependency {
-  parentDirectory?: string;
+  parentDirectory: string;
 }
 
 // An installation plan specifies which versions of dependencies to install and where to install them
